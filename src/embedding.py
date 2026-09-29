@@ -1,0 +1,9 @@
+import os 
+from dotenv import load_dotenv
+from huggingface_hub import InferenceClient
+
+load_dotenv()
+
+hf_token=os.getenv("HUGING_FACE")
+
+client=InferenceClient
