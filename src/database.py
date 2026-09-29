@@ -14,9 +14,10 @@ def get_conection():
     return conn
 
 def insert_chunks(conn,content,embedding):
+    register_vector(conn)
     cur=conn.cursor()
 
-    cur.execute( "INSERT INTO document_chunks (content,embedding) VALUES(%,%)",(content,embedding))
+    cur.execute( "INSERT INTO document_chunks (content,embedding) VALUES(%s,%s)",(content,embedding))
 
     conn.commit()
 

@@ -13,9 +13,10 @@ def get_embedding(text):
     model="sentence-transformers/all-MiniLM-L6-v2"
 
     embeding=client.feature_extraction(text)
+    embeding = np.array(embeding)
 
-    return embeding
+    return embeding.mean(axis=0)
 
-hi=get_embedding("you are a programer and your jib is to write code" )
+hi=get_embedding("you are a programer and your jib is to wrihbcdackjs cnklsdhcd cijdcadcewfbheck jdcjb dlsakhfekrjwaci cweihfnwufrugfveidcbcak;whffruiea;ue o;qfhkqaeqjfte code" )
 
-print(hi)
+print(hi.shape)

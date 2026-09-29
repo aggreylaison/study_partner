@@ -1,6 +1,8 @@
 from markitdown import MarkItDown
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from embedding import get_embedding
+from database import get_conection,insert_chunks
+
 
 md=MarkItDown()
 
@@ -13,10 +15,13 @@ text_splitter=RecursiveCharacterTextSplitter(chunk_size=500,chunk_overlap=20)
 chunks=text_splitter.split_text(marked_down)
 
 embeded_chunks=[]
+conn=get_conection()
+
 
 for chunk in chunks:
     embed=get_embedding(chunk)
-
     embeded_chunks.append(embed)
 
-print(embeded_chunks[0],chunks[0])
+    
+    insert_chunks(conn,chunk,embed)
+conn.close
