@@ -2,6 +2,7 @@ from markitdown import MarkItDown
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from embedding import get_embedding
 from database import get_conection,insert_chunks
+from document import insert_doc_name
 
 
 md=MarkItDown()
