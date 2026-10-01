@@ -1,45 +1,29 @@
 from database import get_conection
 
-
-def get_users_columns(conn):
-    with conn.cursor() as cur:
-        cur.execute(
-            """
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_schema = 'public' AND table_name = 'users'
-            ORDER BY ordinal_position
-            """
-        )
-        return [row[0] for row in cur.fetchall()]
-
+conn=get_conection()
 
 def insert_dummy_user(conn, username):
-    columns = get_users_columns(conn)
-    lower_columns = {column.lower(): column for column in columns}
-
-    if 'username' in lower_columns:
-        column_name = lower_columns['username']
-        sql = f"INSERT INTO users ({column_name}) VALUES (%s)"
-        params = (username,)
-    elif 'name' in lower_columns:
-        column_name = lower_columns['name']
-        sql = f"INSERT INTO users ({column_name}) VALUES (%s)"
-        params = (username,)
-    else:
-        sql = "INSERT INTO users (username) VALUES (%s)"
-        params = (username,)
 
     with conn.cursor() as cur:
-        cur.execute(sql, params)
+        cur.execute(
+            "INSERT INTO users (username) VALUES (%s) RETURNING id",
+            (username,)
+        )
+        user_id = cur.fetchone()[0]
 
     conn.commit()
-    print(f"Inserted dummy user: {username}")
+    return user_id
 
+def get_user_id(conn, username):
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT id FROM users WHERE username = %s",(username,)
+        )
+        result=cur.fetchone()
 
-if __name__ == "__main__":
-    conn = get_conection()
-    try:
-        insert_dummy_user(conn, "aggrey")
-    finally:
-        conn.close()
+        return result[0] if result else None
+
+    
+
+user_id = get_user_id(conn, "john")
+print(user_id)
