@@ -1,6 +1,6 @@
 import psycopg
-from database import get_conection
-from embedding import get_embedding
+from src.database import get_conection
+from src.embedding import get_embedding
 from pgvector.psycopg import register_vector
 
 
